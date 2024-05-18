@@ -21,7 +21,7 @@ If you want to customize the values of each parameter, refer to parser.py. For e
 python main.py -d wikipedia --n_hop 2 --run 2 --a1 0.3 --a2 0.3 --a3 0.2
 ```
 
-## Reference
+## References
 We introduce some pre-trained teacher models for embedding distillation, and the source code for them is open-source:
 ```
 https://github.com/tkipf/gae
