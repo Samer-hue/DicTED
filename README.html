@@ -156,6 +156,42 @@
         <p>我们还进行了消融实验和灵敏度实验。</p>
         <img src="image/消融.png" alt="消融实验结果">
         <img src="image/灵敏度.png" alt="灵敏度实验结果">
+        <h2>关于代码的说明</h2>
+
+        <h3>环境配置</h3>
+        <p>我们在同一台设备上运行了该项目，该设备配备了22个vCPU的AMD EPYC 7T83 64核处理器和一块24GB内存的RTX 4090显卡。</p>
+        <p>其他依赖项：</p>
+        <blockquote>
+        <p>PyTorch &gt;= 1.4</p>
+        <p>python &gt;= 3.7</p>
+        <p>pandas==1.4.3</p>
+        <p>tqdm==4.41.1</p>
+        <p>numpy==1.23.1</p>
+        <p>scikit_learn==1.1.2</p>
+        </blockquote>
+        
+        <h3>运行项目</h3>
+        <p>如果您想运行该项目，最简单的方法是运行以下命令，该命令将使用parser.py中指定的默认参数运行程序。</p>
+        <blockquote>
+            <p>python main.py</p>
+        </blockquote>
+        
+
+        <p>如果您想自定义每个参数的值，请参考parser.py。例如，您可以运行以下命令：</p>
+        <blockquote>
+            <p>python main.py -d wikipedia --n_hop 2 --run 2 --a1 0.3 --a2 0.3 --a3 0.2</p>
+        </blockquote>
+        
+        <h3>参考资料</h3>
+        <p>我们引入了一些用于嵌入蒸馏的预训练教师模型，以下是它们的开源代码：</p>
+        <blockquote>
+        <p>https://github.com/tkipf/gae</p>
+        <p>https://github.com/bdy9527/SDCN</p>
+        <p>https://github.com/twitter-research/tgn</p>
+        <p>https://github.com/WenZhihao666/TREND</p>
+        <p>https://github.com/Graph-COM/Neighborhood-Aware-Temporal-Network</p>
+    </blockquote>
+        
     </div>
 </body>
 
