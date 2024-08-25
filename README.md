@@ -4,7 +4,7 @@
 
 > 在时序图学习领域中，字典时序图网络是一项新兴的重要技术。与现有方法相比，字典网络在训练中的存储、更新和计算更为灵活，因而性能更优。但是，它仍然存在一些问题:(1)这种字典网络严重依赖可靠的原始特征，缺乏这些特征会带来冷启动问题;(2)在嵌入的不断更新过程中，可能会出现灾难性遗忘的问题。为解决这些问题，我们提出一种基于预训练嵌入蒸馏的字典时序图网络(DicTED)。DicTED通过引入预训练教师模型生成先验嵌入，结合对比损失，提升了模型的节点嵌入可靠性和新旧知识的平衡能力。
 
-> 可访问 [作品主页]([https://github.com/Samer-hue/DicTED/README.html](https://samer-hue.github.io/DicTED/README.html))、[论文全文](https://link.springer.com/chapter/10.1007/978-981-97-5678-0_29)。
+> 可访问 [作品主页](https://samer-hue.github.io/DicTED/README.html)、[论文全文](https://link.springer.com/chapter/10.1007/978-981-97-5678-0_29)。
 
 ## 技术背景与挑战
 
