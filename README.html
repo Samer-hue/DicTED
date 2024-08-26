@@ -28,7 +28,6 @@
             text-align: center;
         }
 
-        /* 全局样式，增强清晰度并缩小非指定图片 */
         img {
             width: 80%;
             height: auto;
@@ -36,19 +35,17 @@
             margin: 20px auto;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            image-rendering: crisp-edges; /* 增强图片清晰度 */
+            image-rendering: crisp-edges; 
         }
 
-        /* 保持 framework.png 和 github-mark.png 图片的默认大小和清晰度 */
         img[src="image/framework.png"],
         img[src="image/github-mark.png"] {
-            width: 80%; /* 保持默认大小 */
-            image-rendering: auto; /* 保持清晰度自动 */
+            width: 80%;
+            image-rendering: auto;
         }
 
-        /* 对其他图片应用缩小样式 */
         img:not([src="image/framework.png"]):not([src="image/github-mark.png"]) {
-            width: 50%; /* 缩小至 50% 大小 */
+            width: 50%;
         }
 
         video {
