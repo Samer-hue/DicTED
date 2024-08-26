@@ -1,38 +1,45 @@
-# DicTED: 基于预训练嵌入蒸馏的字典时序图神经网络
+# DicTED: Dictionary Temporal Graph Network via Pre-training Embedding Distillation
 
-> 基于该项目的论文已发表于ICIC 2024 (CCF-C)
+> The paper based on this project has been published in ICIC 2024 (CCF-C).
 
-> 在时序图学习领域中，字典时序图网络是一项新兴的重要技术。与现有方法相比，字典网络在训练中的存储、更新和计算更为灵活，因而性能更优。但是，它仍然存在一些问题:(1)这种字典网络严重依赖可靠的原始特征，缺乏这些特征会带来冷启动问题;(2)在嵌入的不断更新过程中，可能会出现灾难性遗忘的问题。为解决这些问题，我们提出一种基于预训练嵌入蒸馏的字典时序图网络(DicTED)。DicTED通过引入预训练教师模型生成先验嵌入，结合对比损失，提升了模型的节点嵌入可靠性和新旧知识的平衡能力。
+> In the field of temporal graph learning, the dictionary temporal graph network is an emerging and significant technology. Compared to existing methods, dictionary networks offer greater flexibility in storage, updating, and computation during training, leading to superior performance. However, they still face some challenges: (1) These dictionary networks heavily rely on reliable raw features, and the absence of such features can result in cold start issues; (2) During the continuous updating of embeddings, catastrophic forgetting may occur. To address these issues, we propose a Dictionary Temporal Graph Network via Pre-training Embedding Distillation (DicTED). DicTED enhances the reliability of node embeddings and balances new and old knowledge by introducing a pre-trained teacher model to generate prior embeddings, combined with contrastive loss.
 
-> 可访问 [作品主页](https://samer-hue.github.io/DicTED/README.html)、[论文全文](https://link.springer.com/chapter/10.1007/978-981-97-5678-0_29)。
+> Visit the [Project Homepage(Chinese)](https://samer-hue.github.io/DicTED/README.html) and [Full Paper](https://link.springer.com/chapter/10.1007/978-981-97-5678-0_29).
 
-## 技术背景与挑战
+## Technical Background and Challenges
 
-图结构作为一种强大的数学工具，被广泛应用于社交网络、生物网络、推荐系统和知识图谱等领域。时序图学习是在传统图学习的基础上引入时间维度，以更好地分析图的动态演变。然而，由于数据结构的限制，在训练过程中从不同角度获取丰富多样的信息是一大挑战，这往往导致现有方法在获取多源信息时复杂度增加。此外，频繁的更新和训练还会引发内存问题。<br>
-为了解决这些挑战，字典时序图网络应运而生。该方法通过聚合邻域信息并以字典形式存储，在需要时进行匹配和提取，从而实现更灵活的存储、更新和计算。然而，这种方法仍存在以下问题：（1）字典网络过度依赖可靠的原始特征，缺乏这些特征会导致冷启动问题。在初始化阶段，如果没有可靠的特征集，模型难以在训练初期获得良好的优化，影响后续训练效果。（2）在嵌入不断更新的过程中，可能会出现灾难性遗忘问题。由于新知识不断覆盖旧知识，模型在训练后期逐渐失去对早期信息的掌握，影响信息的全面获取。
+Graph structures, as a powerful mathematical tool, are widely applied in domains such as social networks, biological networks, recommendation systems, and knowledge graphs. Temporal graph learning extends traditional graph learning by incorporating a temporal dimension to better analyze the dynamic evolution of graphs. However, due to the limitations of data structures, obtaining rich and diverse information from different perspectives during training presents a significant challenge. This often results in increased complexity when existing methods attempt to acquire multi-source information. Furthermore, frequent updates and training can lead to memory issues.
 
-## 解决方案
-针对上述问题，我们提出一个关键问题：如果引入技术来解决字典时序图网络中的问题，可能会引入更复杂的模块，这与字典网络的初衷相悖。在这种情况下，是否可以通过引入外部的先验知识来解决这些问题？基于此动机，我们提出了一种通过预训练嵌入蒸馏来增强字典时序图网络的新方案，称为**DicTED**。虽然知识蒸馏范式在现有工作中已被广泛应用，但尚无人将其扩展至字典时序图网络领域，这为我们提供了一个填补空白的机会。这种方法能够很好地解决冷启动和灾难性遗忘问题。<br>
-我们通过引入多个预训练教师模型来生成嵌入，并将其融合为DicTED的先验特征。具体来说，针对上述问题：<br>
-- **在输入端：**: 将先验特征与原始特征结合，以增强模型的初始化，从而使模型在训练中获得更好的信息和视角。
-- **在优化端：**: 通过嵌入损失和预测得分损失来促使训练节点嵌入与先验特征尽可能对齐，从而在一定程度上保留原始信息。
-![DicTED 模型框架](image/framework.png)
-![DicTED 模型伪代码](image/pseudocode.png)
+To address these challenges, dictionary temporal graph networks have emerged. This approach aggregates neighborhood information and stores it in a dictionary format, allowing for flexible storage, updating, and retrieval when needed. However, this method still faces the following issues: (1) Dictionary networks are overly dependent on reliable raw features, and the lack of such features can lead to cold start problems. During the initialization phase, if a reliable feature set is not available, the model struggles to achieve good optimization in the early stages of training, negatively impacting subsequent training performance. (2) During the continuous updating of embeddings, catastrophic forgetting may occur. As new knowledge continuously overwrites old knowledge, the model gradually loses grasp of early information during later stages of training, affecting the comprehensive acquisition of information.
 
-## 实验结果
+## Solution
+To tackle the aforementioned issues, we pose a critical question: If introducing techniques to address the problems in dictionary temporal graph networks might introduce more complex modules, which contradicts the original intent of dictionary networks, can these issues be resolved by incorporating external prior knowledge? Motivated by this, we propose a novel approach to enhance dictionary temporal graph networks through pre-training embedding distillation, called **DicTED**. Although the knowledge distillation paradigm has been widely applied in existing work, it has yet to be extended to the field of dictionary temporal graph networks, providing us with an opportunity to fill this gap. This approach effectively addresses cold start and catastrophic forgetting issues.
 
-我们在多个真实数据集上的实验验证了DEDG的有效性。该实验以链路预测为目标任务，以AUC、AP为评估指标，数据集的信息和实验结果如下表：
-![DicTED 实验数据集信息](image/dataset_detail.png)
-![DicTED 主实验结果](image/performance.png)
-我们还进行了消融实验和灵敏度实验。
-![DicTED 消融实验结果](image/ablation.png)
-![DicTED 灵敏度实验结果](image/sensitivity.png)
+We introduce multiple pre-trained teacher models to generate embeddings and integrate them as prior features for DicTED. Specifically, to address the aforementioned issues:
+- **At the Input Stage:** We combine prior features with raw features to enhance the model's initialization, enabling the model to gain better information and perspectives during training.
+- **At the Optimization Stage:** We align the training node embeddings with prior features through embedding loss and prediction score loss, thereby preserving the original information to a certain extent.
 
+![DicTED Model Framework](image/framework.png)
+![DicTED Model Pseudocode](image/pseudocode.png)
 
-## 关于代码的说明
-### 运行环境
-我们在同一台设备上运行了该项目，该设备配备了22个vCPU的AMD EPYC 7T83 64核处理器和一块24GB内存的RTX 4090显卡。<br>
-其他依赖项:
+## Experimental Results
+
+We validated the effectiveness of DicTED through experiments on multiple real-world datasets. The experiments focused on link prediction as the target task, using AUC (Area Under the Curve) and AP (Average Precision) as evaluation metrics. The information on the datasets and the experimental results are presented in the following tables:
+
+![DicTED Dataset Information](image/dataset_detail.png)
+![DicTED Main Experimental Results](image/performance.png)
+
+We also conducted ablation studies and sensitivity analyses:
+
+![DicTED Ablation Study Results](image/ablation.png)
+![DicTED Sensitivity Analysis Results](image/sensitivity.png)
+
+## Code Explanation
+
+### Runtime Environment
+
+We executed this project on the same device, equipped with a 22 vCPU AMD EPYC 7T83 64-core processor and an RTX 4090 GPU with 24GB of memory. The other dependencies are as follows:
+
 ```
 PyTorch >= 1.4
 python >= 3.7
@@ -42,18 +49,24 @@ numpy==1.23.1
 scikit_learn==1.1.2
 ```
 
-### 运行项目
-如果您想运行该项目，最简单的方法是运行以下命令，该命令将使用parser.py中指定的默认参数运行程序。
+### Running the Project
+
+If you wish to run the project, the simplest way is to execute the following command, which will run the program using the default parameters specified in `parser.py`:
+
 ```
 python main.py
 ```
-如果您想自定义每个参数的值，请参考parser.py。例如，您可以运行以下命令：
+
+If you want to customize each parameter, refer to `parser.py`. For example, you can run the following command:
+
 ```
 python main.py -d wikipedia --n_hop 2 --run 2 --a1 0.3 --a2 0.3 --a3 0.2
 ```
 
-### 参考资料
-我们引入了一些用于嵌入蒸馏的预训练教师模型，以下是它们的开源代码：
+### References
+
+We introduced some pre-trained teacher models for embedding distillation. Here are their open-source codes:
+
 ```
 https://github.com/tkipf/gae
 https://github.com/bdy9527/SDCN
@@ -62,8 +75,10 @@ https://github.com/WenZhihao666/TREND
 https://github.com/Graph-COM/Neighborhood-Aware-Temporal-Network
 ```
 
-## 引用我们
-如果您在自己的工作中使用此代码，请引用我们的论文:
+## Cite
+
+If you use this code in your own work, please cite our paper:
+
 ```
 @inproceedings{liu2024dictionary,
   title={Dictionary Temporal Graph Network via Pre-training Embedding Distillation},
