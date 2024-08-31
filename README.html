@@ -35,7 +35,8 @@
             margin: 20px auto;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            image-rendering: crisp-edges; 
+            image-rendering: crisp-edges;
+            transition: transform 0.3s ease; /* 图片放大效果的过渡 */
         }
 
         img[src="image/framework.png"],
@@ -46,6 +47,10 @@
 
         img:not([src="image/framework.png"]):not([src="image/github-mark.png"]) {
             width: 50%;
+        }
+
+        img:hover {
+            transform: scale(1.05); /* 鼠标悬停时放大 */
         }
 
         video {
@@ -108,52 +113,122 @@
             text-decoration: none;
             color: #0056b3;
         }
+
+        /* 添加导航栏 */
+        nav {
+            background-color: #0056b3;
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffcc00;
+        }
+
+        /* 页面内容块的跳转过渡效果 */
+        section {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>DicTED: 基于预训练嵌入蒸馏的字典时序图神经网络</h1>
-        <h4>基于该项目的论文已发表于ICIC 2024 (CCF-C)</h4>
-        <div class="github-link" style="display: flex; justify-content: center; gap: 20px;">
-            <a href="https://github.com/Samer-hue/DicTED" style="text-align: center;">
-                <img src="image/github-mark.png" alt="GitHub">
-                <span>项目代码</span>
-            </a>
-            <a href="https://link.springer.com/chapter/10.1007/978-981-97-5678-0_29" style="text-align: center;">
-                <img src="image/github-mark.png" alt="GitHub">
-                <span>论文全文</span>
-            </a>
-        </div>
-
-        <blockquote>
-            <p>在时序图学习领域中，字典时序图网络是一项新兴的重要技术。与现有方法相比，字典网络在训练中的存储、更新和计算更为灵活，因而性能更优。但是，它仍然存在一些问题:(1)这种字典网络严重依赖可靠的原始特征，缺乏这些特征会带来冷启动问题;(2)在嵌入的不断更新过程中，可能会出现灾难性遗忘的问题。为解决这些问题，我们提出一种基于预训练嵌入蒸馏的字典时序图网络(DicTED)。DicTED通过引入预训练教师模型生成先验嵌入，结合对比损失，提升了模型的节点嵌入可靠性和新旧知识的平衡能力。
-            </p>
-        </blockquote>
-        <h2>技术背景与挑战</h2>
-        <p>图结构作为一种强大的数学工具，被广泛应用于社交网络、生物网络、推荐系统和知识图谱等领域。时序图学习是在传统图学习的基础上引入时间维度，以更好地分析图的动态演变。然而，由于数据结构的限制，在训练过程中从不同角度获取丰富多样的信息是一大挑战，这往往导致现有方法在获取多源信息时复杂度增加。此外，频繁的更新和训练还会引发内存问题。
-        </p>
-        <p>为了解决这些挑战，字典时序图网络应运而生。该方法通过聚合邻域信息并以字典形式存储，在需要时进行匹配和提取，从而实现更灵活的存储、更新和计算。然而，这种方法仍存在以下问题：（1）字典网络过度依赖可靠的原始特征，缺乏这些特征会导致冷启动问题。在初始化阶段，如果没有可靠的特征集，模型难以在训练初期获得良好的优化，影响后续训练效果。（2）在嵌入不断更新的过程中，可能会出现灾难性遗忘问题。由于新知识不断覆盖旧知识，模型在训练后期逐渐失去对早期信息的掌握，影响信息的全面获取。
-        </p>
-        <h2>解决方案</h2>
-        <p>针对上述问题，我们提出一个关键问题：如果引入技术来解决字典时序图网络中的问题，可能会引入更复杂的模块，这与字典网络的初衷相悖。在这种情况下，是否可以通过引入外部的先验知识来解决这些问题？基于此动机，我们提出了一种通过预训练嵌入蒸馏来增强字典时序图网络的新方案，称为DicTED。虽然知识蒸馏范式在现有工作中已被广泛应用，但尚无人将其扩展至字典时序图网络领域，这为我们提供了一个填补空白的机会。这种方法能够很好地解决冷启动和灾难性遗忘问题。
-        </p>
-        <p>我们通过引入多个预训练教师模型来生成嵌入，并将其融合为DicTED的先验特征。具体来说，针对上述问题：</p>
+    <!-- 导航栏 -->
+    <nav>
         <ul>
-            <li><strong>在输入端：</strong> 将先验特征与原始特征结合，以增强模型的初始化，从而使模型在训练中获得更好的信息和视角。</li>
-            <li><strong>在优化端：</strong> 通过嵌入损失和预测得分损失来促使训练节点嵌入与先验特征尽可能对齐，从而在一定程度上保留原始信息。</li>
+            <li><a href="#intro">简介</a></li>
+            <li><a href="#background">技术背景与挑战</a></li>
+            <li><a href="#solution">解决方案</a></li>
+            <li><a href="#results">实验结果</a></li>
         </ul>
-        <img src="image/framework.png" alt="DicTED 模型架构">
-        <img src="image/pseudocode.png" alt="DicTED 伪代码">
-        <h2>实验结果</h2>
-        <p>总的来说，该模型既关注了训练早期的冷启动问题，又关注了训练后期的灾难性遗忘问题，能够有效提升字典时序图网络的性能。</p>
-        <p>之后，我们在多个真实数据集上的实验验证了DEDG的有效性。该实验以链路预测为目标任务，以AUC、AP为评估指标，数据集的信息和实验结果如下表：</p>
-        <img src="image/dataset_detail.png" alt="实验数据集信息">
-        <img src="image/performance.png" alt="主实验结果">
-        <p>我们还进行了消融实验和灵敏度实验。</p>
-        <img src="image/ablation.png" alt="消融实验结果">
-        <img src="image/sensitivity.png" alt="灵敏度实验结果">  
-    </div>
-</body>
+    </nav>
 
+    <div class="container">
+        <section id="intro" class="active">
+            <h1>DicTED: 基于预训练嵌入蒸馏的字典时序图神经网络</h1>
+            <h4>基于该项目的论文已发表于ICIC 2024 (CCF-C)</h4>
+            <div class="github-link" style="display: flex; justify-content: center; gap: 20px;">
+                <a href="https://github.com/Samer-hue/DicTED" style="text-align: center;">
+                    <img src="image/github-mark.png" alt="GitHub">
+                    <span>项目代码</span>
+                </a>
+                <a href="https://link.springer.com/chapter/10.1007/978-981-97-5678-0_29" style="text-align: center;">
+                    <img src="image/github-mark.png" alt="GitHub">
+                    <span>论文全文</span>
+                </a>
+            </div>
+            <blockquote>
+                <p>在时序图学习领域中，字典时序图网络是一项新兴的重要技术。与现有方法相比，字典网络在训练中的存储、更新和计算更为灵活，因而性能更优。但是，它仍然存在一些问题:(1)这种字典网络严重依赖可靠的原始特征，缺乏这些特征会带来冷启动问题;(2)在嵌入的不断更新过程中，可能会出现灾难性遗忘的问题。为解决这些问题，我们提出一种基于预训练嵌入蒸馏的字典时序图网络(DicTED)。DicTED通过引入预训练教师模型生成先验嵌入，结合对比损失，提升了模型的节点嵌入可靠性和新旧知识的平衡能力。</p>
+            </blockquote>
+        </section>
+
+        <section id="background">
+            <h2>技术背景与挑战</h2>
+            <p>图结构作为一种强大的数学工具，被广泛应用于社交网络、生物网络、推荐系统和知识图谱等领域。时序图学习是在传统图学习的基础上引入时间维度，以更好地分析图的动态演变。然而，由于数据结构的限制，在训练过程中从不同角度获取丰富多样的信息是一大挑战，这往往导致现有方法在获取多源信息时复杂度增加。此外，频繁的更新和训练还会引发内存问题。</p>
+            <p>为了解决这些挑战，字典时序图网络应运而生。该方法通过聚合邻域信息并以字典形式存储，在需要时进行匹配和提取，从而实现更灵活的存储、更新和计算。然而，这种方法仍存在以下问题：（1）字典网络过度依赖可靠的原始特征，缺乏这些特征会导致冷启动问题。在初始化阶段，如果没有可靠的特征集，模型难以在训练初期获得良好的优化，影响后续训练效果。（2）在嵌入不断更新的过程中，可能会出现灾难性遗忘问题。由于新知识不断覆盖旧知识，模型在训练后期逐渐失去对早期信息的掌握，影响信息的全面获取。</p>
+        </section>
+
+        <section id="solution">
+            <h2>解决方案</h2>
+            <p>针对上述问题，我们提出一个关键问题：如果引入技术来解决字典时序图网络中的问题，可能会引入更复杂的模块，这与字典网络的初衷相悖。在这种情况下，是否可以通过引入外部的先验知识来解决这些问题？基于此动机，我们提出了一种通过预训练嵌入蒸馏来增强字典时序图网络的新方案，称为DicTED。虽然知识蒸馏范式在现有工作中已被广泛应用，但尚无人将其扩展至字典时序图网络领域，这为我们提供了一个填补空白的机会。这种方法能够很好地解决冷启动和灾难性遗忘问题。</p>
+            <p>我们通过引入多个预训练教师模型来生成嵌入，并将其融合为DicTED的先验特征。具体来说，针对上述问题：</p>
+            <ul>
+                <li><strong>在输入端：</strong> 将先验特征与原始特征结合，以增强模型的初始化，从而使模型在训练中获得更好的信息和视角。</li>
+                <li><strong>在优化端：</strong> 通过嵌入损失和预测得分损失来促使训练节点嵌入与先验特征尽可能对齐，从而在一定程度上保留原始信息。</li>
+            </ul>
+            <img src="image/framework.png" alt="DicTED 模型架构">
+            <img src="image/pseudocode.png" alt="DicTED 伪代码">
+        </section>
+
+        <section id="results">
+            <h2>实验结果</h2>
+            <p>总的来说，该模型既关注了训练早期的冷启动问题，又关注了训练后期的灾难性遗忘问题，能够有效提升字典时序图网络的性能。</p>
+            <p>之后，我们在多个真实数据集上的实验验证了DEDG的有效性。该实验以链路预测为目标任务，以AUC、AP为评估指标，数据集的信息和实验结果如下表：</p>
+            <img src="image/dataset_detail.png" alt="实验数据集信息">
+            <img src="image/performance.png" alt="主实验结果">
+            <p>我们还进行了消融实验和灵敏度实验。</p>
+            <img src="image/ablation.png" alt="消融实验结果">
+            <img src="image/sensitivity.png" alt="灵敏度实验结果">  
+        </section>
+    </div>
+
+    <script>
+        // 页面跳转过渡效果
+        document.querySelectorAll('nav ul li a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('section').forEach(section => section.classList.remove('active'));
+                const target = document.querySelector(this.getAttribute('href'));
+                target.classList.add('active');
+            });
+        });
+    </script>
+</body>
 </html>
