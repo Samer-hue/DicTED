@@ -119,6 +119,10 @@
             background-color: #0056b3;
             padding: 10px 0;
             margin-bottom: 30px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
 
         nav ul {
@@ -145,16 +149,14 @@
             color: #ffcc00;
         }
 
-        /* 页面内容块的跳转过渡效果 */
-        section {
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            opacity: 0;
-            transform: translateY(20px);
+        /* 添加容器的上间距，避免导航栏遮挡内容 */
+        .container {
+            padding-top: 100px;
         }
 
-        section.active {
-            opacity: 1;
-            transform: translateY(0);
+        /* 平滑滚动效果 */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -171,7 +173,7 @@
     </nav>
 
     <div class="container">
-        <section id="intro" class="active">
+        <section id="intro">
             <h1>DicTED: 基于预训练嵌入蒸馏的字典时序图神经网络</h1>
             <h4>基于该项目的论文已发表于ICIC 2024 (CCF-C)</h4>
             <div class="github-link" style="display: flex; justify-content: center; gap: 20px;">
@@ -219,16 +221,5 @@
         </section>
     </div>
 
-    <script>
-        // 页面跳转过渡效果
-        document.querySelectorAll('nav ul li a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelectorAll('section').forEach(section => section.classList.remove('active'));
-                const target = document.querySelector(this.getAttribute('href'));
-                target.classList.add('active');
-            });
-        });
-    </script>
 </body>
 </html>
